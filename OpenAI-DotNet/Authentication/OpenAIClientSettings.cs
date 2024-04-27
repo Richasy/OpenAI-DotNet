@@ -75,7 +75,7 @@ namespace OpenAI
         /// <param name="useActiveDirectoryAuthentication">
         /// Optional, set to true if you want to use Azure Active Directory for Authentication.
         /// </param>
-        public OpenAIClientSettings(string resourceName, string deploymentId, string apiVersion = DefaultAzureApiVersion, bool useActiveDirectoryAuthentication = false)
+        public OpenAIClientSettings(string resourceName, string apiVersion = DefaultAzureApiVersion, bool useActiveDirectoryAuthentication = false)
         {
             if (string.IsNullOrWhiteSpace(resourceName))
             {
@@ -94,7 +94,7 @@ namespace OpenAI
             }
 
             ResourceName = resourceName;
-            DeploymentId = deploymentId;
+            DeploymentId = string.Empty;
             ApiVersion = apiVersion;
             BaseRequest = $"/openai/deployments/{DeploymentId}/";
             BaseRequestUrlFormat = $"https://{ResourceName}.{AzureOpenAIDomain}{BaseRequest}{{0}}";
@@ -102,15 +102,22 @@ namespace OpenAI
             UseOAuthAuthentication = useActiveDirectoryAuthentication;
         }
 
+        public void UpdateDeploymentId(string deploymentId)
+        {
+            DeploymentId = deploymentId;
+            BaseRequest = $"/openai/deployments/{DeploymentId}/";
+            BaseRequestUrlFormat = $"https://{ResourceName}.{AzureOpenAIDomain}{BaseRequest}{{0}}";
+        }
+
         public string ResourceName { get; }
 
         public string ApiVersion { get; }
 
-        public string DeploymentId { get; }
+        public string DeploymentId { get; private set; }
 
-        internal string BaseRequest { get; }
+        internal string BaseRequest { get; private set; }
 
-        internal string BaseRequestUrlFormat { get; }
+        internal string BaseRequestUrlFormat { get; private set; }
 
         internal bool UseOAuthAuthentication { get; }
 

@@ -124,7 +124,7 @@ namespace OpenAI
         /// <summary>
         /// The client settings for configuring Azure OpenAI or custom domain.
         /// </summary>
-        internal OpenAIClientSettings OpenAIClientSettings { get; }
+        public OpenAIClientSettings OpenAIClientSettings { get; }
 
         /// <summary>
         /// Enables or disables debugging for all endpoints.
