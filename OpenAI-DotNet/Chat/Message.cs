@@ -34,7 +34,7 @@ namespace OpenAI.Chat
         public Message(Role role, IEnumerable<Content> content, string name = null)
         {
             Role = role;
-            Content = content.ToList();
+            Content = content is not null && content.Count() == 1 ? content.First().Text : content.ToList();
             Name = name;
         }
 
@@ -159,7 +159,8 @@ namespace OpenAI.Chat
 
                 foreach (var otherToolCall in other.ToolCalls)
                 {
-                    if (otherToolCall == null) { continue; }
+                    if (otherToolCall == null)
+                    { continue; }
 
                     if (otherToolCall.Index.HasValue)
                     {
